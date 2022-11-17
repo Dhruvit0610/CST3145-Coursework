@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Header & Style-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/07599eed00.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="product.js"></script>
+    <title>Vue.js Application</title>
+    <style>
+        body {
+            background-image: url('images/background.jfif');
+            background-repeat: no-repeat;
+             background-attachment: fixed;
+             background-size: cover;
+            }
+    </style>
+  </head>
+
+  <body>
+    
+    <!-- title of a page -->
+    <div class="d-flex justify-content-center">
+      <h2>After School Club</h2>
+    </div>
+    
+    
+<form>
+  <h4>Filters Your products :</h4>
+  <input type="radio" id="location" name="yourfilter" value="location">
+  <label for="location">Location</label><br>
+  <input type="radio" id="subjects" name="yourfilter" value="subjects">
+  <label for="subjects">Subjects</label><br>
+  <input type="radio" id="price" name="yourfilter" value="price">
+  <label for="price">Price</label><br>
+  <input type="radio" id="Ascending" name="yourfilter" value="Ascending">
+  <label for="Ascending">Ascending</label>
+  <input type="radio" id="Descending" name="yourfilter" value="Descending">
+  <label for="Descending">Descending</label>
+<br>
+<button>Filter </button>
+</form>
+            
+        
+       
+    
+    <!-- Card Body -->
+    <div id="app">
+        
+      <button @click="toggleShowProduct">
+        {{cardItemCount}}
+        <span class="fas fa-shopping-cart"></span>
+        Checkout
+      </button>
+
+      <div id="product" class="container" v-if="showProduct">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+
+            
+        <div class="card" style="width: 288px">
+          <div v-for="product in products" :key="products.id">
+            <img v-bind:src="product.img" height="250px" />
+
+            <div class="card-body">
+               
+                <h2>Lessons : {{product.lessons}}</h2>
+              <h5>Subject:{{product.subject}}</h5>
+              <h5>Location:{{product.location}}</h5>
+              <h5>Price: {{product.price}}</h5>
+              <h5>Total Space:{{product.spaces}}</h5>
+              <h5>SpacesLeft:{{product.spaces - cardCount(product.id)}}</h5>
+          
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  v-on:click="addToCard(product)"
+                  v-if="canAddToCard(product)"
+                >
+                  Add to Card
+                </button>
+                <div v-else>
+                  <button class="btn btn-primary disabled">Add to Card</button>
+                  <p>Sorry!!, Item Out Of Stock!</p>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+       
+        </div>
+      </div>
+      
+      
+      <div v-else>
+        <div class="col-md-6">
+          <h4 >Welcome to the checkout Page</h5>
+            <div v-for="product in products">
+                <h1>{{cardItemCount}}</h1>
+                <img v-bind:src="product.img" height="250px" />
+    
+                <div class="card-body">
+                   <h2>{{showitems}}</h2>
+                    <!-- <h2>Lessons : {{product.lessons}}</h2>
+                  <h5>Subject:{{product.subject}}</h5>
+                  <h5>Location:{{product.location}}</h5>
+                  <h5>Price: {{product.price}}</h5>
+                  <h5>Total Space:{{product.spaces}}</h5>
+                  <h5>SpacesLeft:{{product.spaces - cardCount(product.id)}}</h5> -->
+              
+                  <div class="text-center">
+                    <button>
+                        <!-- {{removeItems}} -->
+                       Remove
+                      </button>
+                    
+                      
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+          <strong> FirstName :</strong>
+          <input
+            type="text"
+            v-model.trim="order.firstname"
+            name="fname"
+            id="Fname"
+            autocomplete="off"
+            placeholder="Enter Your First Name"
+            class="form-control"
+          />
+
+          <strong> LastName:</strong>
+          <input
+            type="text"
+            v-model.trim="order.lastname"
+            name="lname"
+            id="Lname"
+            autocomplete="off"
+            placeholder="Enter Your Last Name"
+            class="form-control"
+          />
+
+          <strong> PhoneNumber:</strong>
+          <input
+            type="tel"
+            v-model.number="order.number"
+            id="Mnumber"
+            name="MobileNumber"
+            autocomplete="off"
+            placeholder="Enter your Mobile Number"
+            class="form-control"
+          />
+        </div>
+        <div class="col-md-12 verify">
+          <h2>Order Information</h2>
+          <pre>
+                First Name: {{order.firstname}}
+                Last Name: {{order.lastname}}
+                Phone Number: {{order.number}}
+            </pre>
+            <h1> Shopping Cart </h1>
+            
+        </div>
+        <button type="submit" v-on:click="submitForm"> Checkout And Place Order</button>
+      </div>
+      
+    </div>
+
+    <script type="text/javascript">
+        
+      // Vue Objects
+      var CardProduct = new Vue({
+        el: "#app",
+        data: {
+          showProduct: true,
+          
+          products: products,
+
+          // array to store the product-ID
+          card: [],
+          order: {
+            firstname: "",
+            lastname: "",
+            number: "",
+          },
+         
+        },
+        // Methods to push the product-ID
+        methods: {
+          addToCard: function (product) {
+
+            this.card.push(product.id);
+          },
+          toggleShowProduct() {
+            this.showProduct = this.showProduct ? false : true;
+          },
+         
+          submitForm() {
+            alert("Order Submitted, Congrulatation!!!");
+          },
+          canAddToCard(product) {
+            return product.spaces > this.cardCount(product.id);
+          },
+          cardCount(id) {
+            let count = 0;
+            for (let i = 0; i < this.card.length; i++) {
+              if (this.card[i] == id) {
+                count++;
+              }
+            }
+            return count;
+          },
+          lessonsLeft(product) {
+            return product.spaces - this.cardCount(product.id);
+          }
+        },
+        //    functions : toCOUNT, TO AddTOCard and check Spaceleft in card
+        computed: {
+          cardItemCount: function () {
+            return this.card.length || "";
+          },
+        //   removeItems: function() {
+        //     return (this.product.spaces - this.card.length) ;
+        //   },
+        showitems: function() {
+            return this.product.addToCard ;
+          },
+          
+          sortedproducts() {
+            function compare(a, b) {
+              if (a.price > b.price) return -1;
+              if (a.price < b.price) return 1;
+              return 0;
+            }
+            return this.products.sort(compare);
+          },
+          locationsortedproducts() {
+            function compare(a, b) {
+              if (a.location > b.location) return -1;
+              if (a.location < b.location) return 1;
+              return 0;
+            }
+            return this.products.sort(compare);
+          },
+          subjectsortedproducts() {
+            function compare(a, b) {
+              if (a.subject > b.subject) return -1;
+              if (a.subject < b.subject) return 1;
+              return 0;
+            }
+            return this.products.sort(compare);
+          },
+          spacessortedproducts() {
+            function compare(a, b) {
+              if (a.spaces > b.spaces) return -1;
+              if (a.spaces < b.spaces) return 1;
+              return 0;
+            }
+            return this.products.sort(compare);
+          },
+         
+}
+        
+      });
+    </script>
+  </body>
+</html>
