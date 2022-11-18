@@ -15,7 +15,7 @@ let products = [
         "lessons": 2,
         "subject": "Drawing",
         "location": "Canterbury",
-        "price":  "£50",
+        "price":  "£150",
         "img": "images/drawing.jfif",
         "spaces": 7
 
@@ -25,7 +25,7 @@ let products = [
         "lessons": 3,
         "subject": "English",
         "location": "Bradford",
-        "price":  "£50",
+        "price":  "£190",
         "img": "images/english.jfif",
         "spaces": 3
 
@@ -35,7 +35,7 @@ let products = [
         "lessons": 4,
         "subject": "Computer",
         "location": "Carlisle",
-        "price":  "£70",
+        "price":  "£170",
         "img": "images/computer.png",
         "spaces": 6
 
@@ -65,7 +65,7 @@ let products = [
         "lessons": 7,
         "subject": "Aptitude",
         "location": "Bath",
-        "price":  "£80",
+        "price":  "£210",
         "img": "images/aptitude.png",
         "spaces": 10
 
@@ -85,7 +85,7 @@ let products = [
         "lessons": 9,
         "subject": "Dance",
         "location": "London",
-        "price":  "£100",
+        "price":  "£110",
         "img": "images/dance.jfif",
         "spaces": 8
 
@@ -95,7 +95,7 @@ let products = [
         "lessons": 10,
         "subject": "Sports",
         "location": "Swindon",
-        "price":  "£60",
+        "price":  "£260",
         "img": "images/sports.jfif",
         "spaces": 5
 
